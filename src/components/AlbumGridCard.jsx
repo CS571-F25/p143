@@ -52,6 +52,18 @@ function AlbumGridCard({ album }) {
             See more
           </Button>
 
+          <Button
+            className="btn-travis"
+            size="sm"
+            onClick={() =>
+            alert(
+              `Placeholder: In a full version, this would open a form to review the album "${album.title}".`
+            )
+            }
+          >
+          Review Album
+          </Button>
+
           <FavoriteButton
             isFavorite={favorite}
             onToggle={() =>
