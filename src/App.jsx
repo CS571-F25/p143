@@ -9,6 +9,7 @@ import AlbumsPage from "./pages/AlbumsPage.jsx";
 import AlbumDetailPage from "./pages/AlbumDetailPage.jsx"; // NEW
 import LeaderboardPage from "./pages/LeaderboardPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
+import FavoritesPage from "./pages/FavoritesPage.jsx";
 
 function App() {
   return (
@@ -16,8 +17,6 @@ function App() {
       style={{
         minHeight: "100vh",
         width: "100%",
-        backgroundColor: "#050508",
-        color: "#f5f5f5",
         display: "flex",
         flexDirection: "column",
       }}
@@ -32,6 +31,7 @@ function App() {
               <Route path="/albums" element={<AlbumsPage />} />
               <Route path="/albums/:albumId" element={<AlbumDetailPage />} /> {/* NEW */}
               <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/account" element={<AccountPage />} />
             </Routes>
           </Container>

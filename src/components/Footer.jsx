@@ -31,7 +31,7 @@ function Footer() {
             Store
           </a>
           <a
-            href="https://www.ticketmaster.com/travis-scott-tickets/artist/1894634"
+            href="https://www.ticketmaster.com/artist/1788754?tm_link=tm_header_search"
             target="_blank"
             rel="noreferrer"
             className="text-light"

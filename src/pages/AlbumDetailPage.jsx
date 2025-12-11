@@ -1,10 +1,13 @@
+// src/pages/AlbumDetailPage.jsx
 import { useParams, Link } from "react-router";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { useFavorites } from "../context/FavoritesContext.jsx";
+import SongRow from "../components/SongRow.jsx";
 
-// central album data for this page
 const albumData = {
   rodeo: {
+    id: "rodeo",
     title: "Rodeo",
     year: 2015,
     mood: "Dark, cinematic trap",
@@ -21,9 +24,14 @@ const albumData = {
       "Piss On Your Grave",
       "Antidote",
       "Impossible",
+      "Maria I'm Drunk",
+      "Flying High",
+      "I Can Tell",
+      "Apple Pie",
     ],
   },
   birds: {
+    id: "birds",
     title: "Birds in the Trap Sing McKnight",
     year: 2016,
     mood: "Atmospheric, melodic",
@@ -35,14 +43,19 @@ const albumData = {
       "coordinate",
       "through the late night",
       "beibs in the trap",
-      "goosebumps",
+      "sdp interlude",
       "sweet sweet",
       "outside",
+      "goosebumps",
+      "first take",
+      "pick up the phone",
+      "lose",
       "guidance",
       "wonderful",
     ],
   },
   astroworld: {
+    id: "astroworld",
     title: "ASTROWORLD",
     year: 2018,
     mood: "Psychedelic carnival",
@@ -56,12 +69,20 @@ const albumData = {
       "STOP TRYING TO BE GOD",
       "NO BYSTANDERS",
       "SKELETONS",
+      "WAKE UP",
+      "5% TINT",
+      "NC-17",
       "ASTROTHUNDER",
       "YOSEMITE",
       "CAN'T SAY",
+      "WHO? WHAT!",
+      "BUTTERFLY EFFECT",
+      "HOUSTONFORNICATION",
+      "COFFEE BEAN",
     ],
   },
   utopia: {
+    id: "utopia",
     title: "UTOPIA",
     year: 2023,
     mood: "Industrial, experimental",
@@ -73,11 +94,20 @@ const albumData = {
       "MODERN JAM",
       "MY EYES",
       "GOD'S COUNTRY",
-      "FE!N",
       "SIRENS",
       "MELTDOWN",
+      "FE!N",
+      "DELRESTO",
       "I KNOW ?",
+      "TOPIA TWINS",
+      "CIRCUS MAXIMUS",
+      "PARASAIL",
+      "SKITZO",
+      "LOST FOREVER",
+      "LOOOVE",
+      "K-POP",
       "TELEKINESIS",
+      "TIL FURTHER NOTICE",
     ],
   },
 };
@@ -85,6 +115,10 @@ const albumData = {
 function AlbumDetailPage() {
   const { albumId } = useParams();
   const album = albumData[albumId];
+  const {
+    isSongFavorite,
+    toggleSongFavorite,
+  } = useFavorites();
 
   if (!album) {
     return (
@@ -100,10 +134,21 @@ function AlbumDetailPage() {
     );
   }
 
-  const handleSongReviewClick = (track) => {
+  const songs = album.tracks.map((title, idx) => ({
+    id: `${album.id}-${idx}`,
+    title,
+    albumId: album.id,
+    albumTitle: album.title,
+  }));
+
+  const handleSongReviewClick = (song) => {
     alert(
-      `Placeholder: In the full app, this will let you review the song "${track}" on ${album.title}.`
+      `Placeholder: In the full app, this will open a review form for "${song.title}" on ${album.title}.`
     );
+  };
+
+  const handleToggleSongFavorite = (song) => {
+    toggleSongFavorite(song);
   };
 
   return (
@@ -130,32 +175,26 @@ function AlbumDetailPage() {
           <tr>
             <th>#</th>
             <th>Song</th>
-            <th>Review</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {album.tracks.map((track, idx) => (
-            <tr key={track}>
-              <td>{idx + 1}</td>
-              <td>{track}</td>
-              <td>
-                <Button
-                  variant="warning"
-                  size="sm"
-                  onClick={() => handleSongReviewClick(track)}
-                >
-                  Review song
-                </Button>
-              </td>
-            </tr>
+          {songs.map((song, index) => (
+            <SongRow
+              key={song.id}
+              index={index}
+              song={song}
+              isFavorite={isSongFavorite(song.id)}
+              onToggleFavorite={handleToggleSongFavorite}
+              onReview={handleSongReviewClick}
+            />
           ))}
         </tbody>
       </Table>
 
       <p className="text-muted">
-        Later, these song reviews will feed into the songs leaderboard, while
-        album-level reviews from the Albums page will feed into the albums
-        leaderboard.
+        Song favorites here will show up on your Favorites page and connect to
+        the songs leaderboard conceptually.
       </p>
     </div>
   );

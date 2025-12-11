@@ -17,6 +17,9 @@ function SiteNavbar() {
             <Nav.Link as={Link} to="/leaderboard">
               Leaderboard
             </Nav.Link>
+            <Nav.Link as={Link} to="/favorites">
+              Favorites
+            </Nav.Link>
             <Nav.Link as={Link} to="/account">
               Account
             </Nav.Link>

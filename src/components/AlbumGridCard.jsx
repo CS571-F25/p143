@@ -1,52 +1,48 @@
-// src/components/AlbumGridCard.jsx
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router";
+import { useFavorites } from "../context/FavoritesContext.jsx";
+import FavoriteButton from "./FavoriteButton.jsx";
 
 function AlbumGridCard({ album }) {
+  const { isAlbumFavorite, toggleAlbumFavorite } = useFavorites();
+  const favorite = isAlbumFavorite(album.id);
+
   return (
     <Card bg="dark" text="light" className="mb-4 h-100 shadow-sm">
-      {/* Fake cover image area (you can swap for real images later) */}
-      <div
-        style={{
-          height: "180px",
-          background:
-            "linear-gradient(135deg, #ff6b00, #8b00ff)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-        }}
-        as={Link}
-      >
-        {/* Using a Link-wrapped heading instead of Card.Img so we keep full control */}
-        <Link
-          to={`/albums/${album.id}`}
-          style={{
-            color: "#fff",
-            fontWeight: "700",
-            fontSize: "1.1rem",
-            textAlign: "center",
-            textDecoration: "none",
-          }}
-        >
-          {album.title}
-          <br />
-          <span style={{ fontSize: "0.9rem", opacity: 0.8 }}>
-            {album.year}
-          </span>
+      {/* Album cover image */}
+      {album.cover ? (
+        <Link to={`/albums/${album.id}`}>
+          <Card.Img
+            variant="top"
+            src={album.cover}
+            alt={album.coverAlt || `Album cover for ${album.title}`}
+            className="album-cover"
+          />
         </Link>
-      </div>
+      ) : (
+        // fallback if we ever don't pass a cover (e.g., in favorites)
+        <div
+          style={{
+            height: "180px",
+            background: "linear-gradient(135deg, #ff6b00, #8b00ff)",
+          }}
+          aria-hidden="true"
+        />
+      )}
 
       <Card.Body>
-        <Card.Subtitle className="mb-2 text-warning">
-          {album.mood}
+        {/* Title + year now in the card, like Amazon */}
+        <Card.Title className="mb-1">{album.title}</Card.Title>
+        <Card.Subtitle className="mb-2">
+          {album.year} · <span className="text-warning">{album.mood}</span>
         </Card.Subtitle>
-        <Card.Text className="mb-3">
-          {album.shortDescription}
-        </Card.Text>
 
-        <div className="d-flex justify-content-between">
+        {album.shortDescription && (
+          <Card.Text className="mb-3">{album.shortDescription}</Card.Text>
+        )}
+
+        <div className="d-flex justify-content-between align-items-center">
           <Button
             as={Link}
             to={`/albums/${album.id}`}
@@ -55,17 +51,26 @@ function AlbumGridCard({ album }) {
           >
             See more
           </Button>
-          <Button
-            variant="warning"
-            size="sm"
-            onClick={() =>
-              alert(
-                `Placeholder: In the full app, this will let you review the album "${album.title}".`
-              )
+
+          <FavoriteButton
+            isFavorite={favorite}
+            onToggle={() =>
+              toggleAlbumFavorite({
+                id: album.id,
+                title: album.title,
+                year: album.year,
+                mood: album.mood,
+                // store cover info too if you want it on Favorites page later
+                cover: album.cover,
+                coverAlt: album.coverAlt,
+              })
             }
-          >
-            Review album
-          </Button>
+            label={
+              favorite
+                ? `Remove ${album.title} from favorite albums`
+                : `Add ${album.title} to favorite albums`
+            }
+          />
         </div>
       </Card.Body>
     </Card>

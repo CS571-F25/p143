@@ -1,4 +1,5 @@
 import AlbumTimeline from "../components/AlbumTimeline.jsx";
+import IntroSection from "../components/IntroSection.jsx";
 
 const albums = [
   {
@@ -38,15 +39,7 @@ const albums = [
 function HomePage() {
   return (
     <div>
-      {/* Welcome + quick intro */}
-      <section className="mb-4">
-        <h1 className="mb-2">Welcome to Travis Hub</h1>
-        <p>
-          This site is a fan-made space dedicated to Travis Scott’s music. Start
-          here with an overview of who he is and how his sound has evolved
-          across each major album.
-        </p>
-      </section>
+      <IntroSection />
 
       {/* Biography section */}
       <section className="mb-5">
